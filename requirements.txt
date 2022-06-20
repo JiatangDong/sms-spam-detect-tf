@@ -1,0 +1,10 @@
+tensorflow
+tensorflow_text
+matplotlib
+imblearn
+sklearn
+wordcloud
+pandas
+numpy
+seaborn
+flask
