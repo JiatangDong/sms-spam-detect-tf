@@ -3,7 +3,7 @@ import tensorflow as tf
 import tensorflow_text as text
 
 app = Flask(__name__)
-model = tf.keras.models.load_model('SMSSpamModel')
+model = tf.keras.models.load_model('./SMSSpamModel.H5')
 
 @app.route('/check_spam', methods = ['POST'])
 def check_spam():

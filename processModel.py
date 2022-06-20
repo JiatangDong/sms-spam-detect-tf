@@ -71,8 +71,6 @@ def fitModel(X_train, X_test, y_train, y_test):
     # Use inputs and outputs to construct a final model
     model = tf.keras.Model(inputs=[text_input], outputs = [l])
 
-    model.summary()
-
     METRICS = [
         tf.keras.metrics.BinaryAccuracy(name='accuracy'),
         tf.keras.metrics.Precision(name='precision'),
@@ -83,9 +81,11 @@ def fitModel(X_train, X_test, y_train, y_test):
                 loss='binary_crossentropy',
                 metrics=METRICS)
 
-    return model
+    model.summary()
 
     model.fit(X_train, y_train, epochs=10)
+
+    return model
 
 def testModel(model, X_test, y_test):
     model.evaluate(X_test, y_test)
@@ -108,24 +108,25 @@ def testModel(model, X_test, y_test):
 if __name__ == '__main__':
     train = False
     dataFile = 'spam.csv'
-    saveTo = None
+    modelFile = './SMSSpamModel.H5'
+    saveModel = True
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], 
-                        "t:s:f:m:", 
-                        ["train=", "save_to=", "read_file", "read_model"])
+                        "t:r:m:s", 
+                        ["train=", "read=", "model=", "--save_model"])
     except getopt.GetoptError:
         print('Incorrect command')
         sys.exit(2)
     for opt, arg in opts:
         if opt in ('-t', '--train'):
             train = bool(arg)
-        if opt in ('-s', '--save_to'):
-            saveTo = arg
-        if opt in ('-f', '--read_file'):
-            print('-d', arg)
-        if opt in ('-m', '--read_model'):
-            print('-m', arg)
+        if opt in ('-r', '--read'):
+            dataFile = arg
+        if opt in ('-m', '--model'):
+            modelFile = arg
+        if opt in ('-s', '--save_model'):
+            saveModel = bool(arg)
 
     if train:
         print("Training data")
@@ -133,7 +134,8 @@ if __name__ == '__main__':
         model = fitModel(X_train, X_test, y_train, y_test)
         testModel(model, X_test, y_test)
     else:
-        model = tf.keras.models.load_model('SMSSpamModel')
+        print("Reading Model")
+        model = tf.keras.models.load_model(modelFile)
 
     reviews = [
         'Hey, are you comming univarsity tomorrow?',
@@ -144,8 +146,8 @@ if __name__ == '__main__':
     ]
     print(model.predict(reviews))
 
-    if saveTo:
-        model.save(saveTo +'.H5', save_format='h5')
+    if saveModel:
+        model.save(modelFile)
 
 
     
