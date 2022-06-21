@@ -11,7 +11,6 @@ Original file is located at
 #!pip3 install --quiet tensorflow_text
 
 import os, sys, getopt
-
 import tensorflow as tf
 import tensorflow_hub as hub
 import tensorflow_text as text
@@ -55,7 +54,7 @@ def readData(file='spam.csv'):
 
     return X_train, X_test, y_train, y_test
 
-def fitModel(X_train, X_test, y_train, y_test):
+def fitModel(X_train, y_train):
     bert_preprocess = hub.KerasLayer("https://tfhub.dev/tensorflow/bert_en_uncased_preprocess/3")
     bert_encoder = hub.KerasLayer("https://tfhub.dev/tensorflow/bert_en_uncased_L-12_H-768_A-12/4")
 
@@ -108,7 +107,7 @@ def testModel(model, X_test, y_test):
 if __name__ == '__main__':
     train = False
     dataFile = 'spam.csv'
-    modelFile = './SMSSpamModel.H5'
+    modelFile = './SMSSpamModel'
     saveModel = True
 
     try:
@@ -125,24 +124,24 @@ if __name__ == '__main__':
             dataFile = arg
         if opt in ('-m', '--model'):
             modelFile = arg
-        if opt in ('-s', '--save_model'):
+        if opt in ('-s', '--save'):
             saveModel = bool(arg)
 
+    X_train, X_test, y_train, y_test = readData(dataFile)
     if train:
         print("Training data")
-        X_train, X_test, y_train, y_test = readData(dataFile)
-        model = fitModel(X_train, X_test, y_train, y_test)
-        testModel(model, X_test, y_test)
+        model = fitModel(X_train, y_train)
     else:
         print("Reading Model")
         model = tf.keras.models.load_model(modelFile)
+    testModel(model, X_test, y_test)
 
     reviews = [
-        'Hey, are you comming univarsity tomorrow?',
-        'Enter a chance to win $5000, hurry up, offer valid until march 31, 2021',
-        'You are awarded a SiPix Digital Camera! call 09061221061 from landline. Delivery within 28days. T Cs Box177. M221BP. 2yr warranty. 150ppm. 16 . p pÂ£3.99',
-        'it to 80488. Your 500 free text messages are valid until 31 December 2005.',
-        "Why don't you wait 'til at least wednesday to see if you get your ."
+        "http://paperok.ml - Professional academic help for you!",
+        "You know what the warmer weather means...it's burn season! 🔥 Just ask me to roast one of ur friends. I'll take care of the rest 😎",
+        "Your package is waiting for delivery. Please confirm the settlement of $19.99 on the following link: http://aka.ms/adfuyiwy",
+        "NHS: we have identified that you are eligible to apply for your vaccine. For more information and apply, follow here: application-ukform.com",
+        "Hi, Darya. When I test the iOS telemetry today, I found the same issue with \"New Chat Open\" event. I've ready report a bug for that."
     ]
     print(model.predict(reviews))
 

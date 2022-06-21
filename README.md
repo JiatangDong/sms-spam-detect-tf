@@ -4,17 +4,25 @@
 ```shell
 pip install -r requirements.txt
 ```
+
 ## Train/Verify Model
 
 ```shell
-python processModel.py --train=True
+python model.py <params>
 ```
+`-t` or `--train`: True or False for running model train
+`-r` or `--read`: path for data file
+`-m` or `--model`: path for model file
+`-s` or `--save`: True or False for saving model
 
 ## Start Service
 
 ```shell
-python service.py
+python service.py <params>
 ```
+`-m` or `--model`: path for model file
+`-d` or `--debug`: True or False for debug mode
+
 
 ## Test API
 POST http://localhost:5000/check_spam
