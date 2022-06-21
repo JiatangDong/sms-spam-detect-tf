@@ -138,10 +138,12 @@ if __name__ == '__main__':
 
     reviews = [
         "http://paperok.ml - Professional academic help for you!",
-        "You know what the warmer weather means...it's burn season! 🔥 Just ask me to roast one of ur friends. I'll take care of the rest 😎",
         "Your package is waiting for delivery. Please confirm the settlement of $19.99 on the following link: http://aka.ms/adfuyiwy",
         "NHS: we have identified that you are eligible to apply for your vaccine. For more information and apply, follow here: application-ukform.com",
-        "Hi, Darya. When I test the iOS telemetry today, I found the same issue with \"New Chat Open\" event. I've ready report a bug for that."
+        "I've finally arrived to Vancouver. Already found the office",
+        "watching Project Volterra a DevBox / Mini Gaming PC and other cool stuff from MS Build: https://www.youtube.com/watch?v=yICVNta8jMU",
+        "It's June and one of my neighbors still have Christmas tree on their deck",
+        "What's the difference between the red and the black coat? Is it like belt colors in karate?"
     ]
     print(model.predict(reviews))
 
